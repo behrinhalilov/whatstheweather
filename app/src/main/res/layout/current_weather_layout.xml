@@ -60,8 +60,7 @@
                 android:id="@+id/current_weather_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/weather_logo"/>
+                android:layout_centerInParent="true"/>
 
             <TextView
                 android:id="@+id/weather_description"

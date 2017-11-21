@@ -1,22 +1,36 @@
 package com.bulpros.whatstheweather.models;
 
-import org.json.JSONObject;
-
-import java.util.List;
-
 /**
- * Created by Behrin.Rasimov on 11/20/2017.
+ * Created by Behrin.Rasimov on 11/21/2017.
  */
 
 public class WeatherDescription {
 
-    private List<JSONObject> weather;
+    private String main;
+    private String description;
+    private String icon;
 
-    public List<JSONObject> getWeather() {
-        return weather;
+    public String getMain() {
+        return main;
     }
 
-    public void setWeather(List<JSONObject> weather) {
-        this.weather = weather;
+    public void setMain(String main) {
+        this.main = main;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

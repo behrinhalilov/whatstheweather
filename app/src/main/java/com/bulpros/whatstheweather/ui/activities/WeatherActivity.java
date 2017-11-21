@@ -3,16 +3,19 @@ package com.bulpros.whatstheweather.ui.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bulpros.whatstheweather.R;
+import com.bulpros.whatstheweather.helpers.Constants;
 import com.bulpros.whatstheweather.models.CurrentWeather;
 import com.bulpros.whatstheweather.models.Forecast16Days;
 import com.bulpros.whatstheweather.models.Forecast5Days;
 import com.bulpros.whatstheweather.presenters.WeatherPresenter;
 import com.bulpros.whatstheweather.views.WeatherView;
+import com.bumptech.glide.Glide;
 
 public class WeatherActivity extends AppCompatActivity implements WeatherView {
 
@@ -26,6 +29,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     private TextView maxTemp;
     private TextView description;
     private TextView city;
+    private ImageView weatherMainImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +47,14 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
         maxTemp = findViewById(R.id.maximum_temperature);
         description = findViewById(R.id.weather_description);
         city = findViewById(R.id.city_name);
+        weatherMainImage = findViewById(R.id.current_weather_icon);
 
         loadingProgressBar.setVisibility(View.VISIBLE);
 
         presenter.attemptFetchData(CurrentWeather.class,42.6977,23.3216);
         presenter.attemptFetchData(Forecast5Days.class,42.6977,23.3216);
         presenter.attemptFetchData(Forecast16Days.class,42.6977,23.3216);
+
     }
 
     @Override
@@ -65,6 +71,10 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
             currentTemp.setText("Temp:"+String.valueOf(weather.getMain().getTemp())+" C'");
             minTemp.setText("Min t:"+String.valueOf(weather.getMain().getTemp_min())+" C'");
             maxTemp.setText("Max t:"+String.valueOf(weather.getMain().getTemp_max())+" C'");
+
+            Glide.with(this)
+                    .load(Constants.IMAGE_URL+weather.getWeather().get(0).getIcon()+".png")
+                    .into(weatherMainImage);
 
         } else if(object instanceof Forecast5Days) {
 

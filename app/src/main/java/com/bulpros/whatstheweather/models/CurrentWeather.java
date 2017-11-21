@@ -1,5 +1,10 @@
 package com.bulpros.whatstheweather.models;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.List;
+
 /**
  * Created by Behrin.Rasimov on 11/20/2017.
  */
@@ -10,6 +15,7 @@ public class CurrentWeather {
     private String name;
     private Wind wind;
     private WeatherMain main;
+    private List<WeatherDescription> weather;
 
     public long getId() {
         return id;
@@ -41,5 +47,13 @@ public class CurrentWeather {
 
     public void setMain(WeatherMain main) {
         this.main = main;
+    }
+
+    public List<WeatherDescription> getWeather() {
+        return weather;
+    }
+
+    public void setWeather(List<WeatherDescription> weather) {
+        this.weather = weather;
     }
 }
