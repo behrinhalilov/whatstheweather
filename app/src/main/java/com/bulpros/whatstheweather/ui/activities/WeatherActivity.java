@@ -85,6 +85,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
             currentTemp.setText("Temp:"+String.valueOf(weather.getMain().getTemp())+" C'");
             minTemp.setText("Min t:"+String.valueOf(weather.getMain().getTemp_min())+" C'");
             maxTemp.setText("Max t:"+String.valueOf(weather.getMain().getTemp_max())+" C'");
+            description.setText(weather.getWeather().get(0).getDescription());
 
             Glide.with(this)
                     .load(Constants.IMAGE_URL+weather.getWeather().get(0).getIcon()+".png")
