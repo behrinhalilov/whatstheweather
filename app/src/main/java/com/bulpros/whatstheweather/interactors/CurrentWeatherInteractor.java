@@ -5,6 +5,8 @@ import com.bulpros.whatstheweather.models.CurrentWeather;
 import com.bulpros.whatstheweather.networking.CurrentWeatherApi;
 import com.bulpros.whatstheweather.networking.NetworkManager;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -17,8 +19,12 @@ public class CurrentWeatherInteractor extends BaseInteractor {
 
     public void fetchData(final IWeatherDataFetchListener listener, double lat, double lng) {
 
+        Map<String,String> params = getParams();
+        params.put("lat",String.valueOf(lat));
+        params.put("lon",String.valueOf(lng));
+
         CurrentWeatherApi currentWeatherApi = NetworkManager.instance().create(CurrentWeatherApi.class);
-        Call<CurrentWeather> currentWeatherCall = currentWeatherApi.getCurrentWeather(getParams());
+        Call<CurrentWeather> currentWeatherCall = currentWeatherApi.getCurrentWeather(params);
 
         currentWeatherCall.enqueue(new Callback<CurrentWeather>() {
             @Override
