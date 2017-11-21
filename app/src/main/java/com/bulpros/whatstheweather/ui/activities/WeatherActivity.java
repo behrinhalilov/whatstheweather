@@ -2,6 +2,8 @@ package com.bulpros.whatstheweather.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -14,6 +16,8 @@ import com.bulpros.whatstheweather.models.CurrentWeather;
 import com.bulpros.whatstheweather.models.Forecast16Days;
 import com.bulpros.whatstheweather.models.Forecast5Days;
 import com.bulpros.whatstheweather.presenters.WeatherPresenter;
+import com.bulpros.whatstheweather.ui.adapters.Forecast16Adapter;
+import com.bulpros.whatstheweather.ui.adapters.Forecast5Adapter;
 import com.bulpros.whatstheweather.views.WeatherView;
 import com.bumptech.glide.Glide;
 
@@ -30,6 +34,10 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     private TextView description;
     private TextView city;
     private ImageView weatherMainImage;
+    private Forecast5Adapter forecast5Adapter;
+    private Forecast16Adapter forecast16Adapter;
+    private RecyclerView forecast5DaysRecyclerView;
+    private RecyclerView forecast16DaysRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +56,12 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
         description = findViewById(R.id.weather_description);
         city = findViewById(R.id.city_name);
         weatherMainImage = findViewById(R.id.current_weather_icon);
+
+        forecast5DaysRecyclerView = findViewById(R.id.forecast_5_days_recycler);
+        forecast16DaysRecyclerView = findViewById(R.id.forecast_16_days_recycler);
+
+        forecast5DaysRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
+        forecast16DaysRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
 
         loadingProgressBar.setVisibility(View.VISIBLE);
 
@@ -76,10 +90,19 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
                     .load(Constants.IMAGE_URL+weather.getWeather().get(0).getIcon()+".png")
                     .into(weatherMainImage);
 
+
+
         } else if(object instanceof Forecast5Days) {
+            Forecast5Days forecast5 = (Forecast5Days) object;
+            forecast5Adapter = new Forecast5Adapter(this,forecast5);
+            forecast5DaysRecyclerView.setAdapter(forecast5Adapter);
 
-        } else {
 
+
+        } else if(object instanceof Forecast16Days){
+            Forecast16Days forecast16 = (Forecast16Days) object;
+            forecast16Adapter = new Forecast16Adapter(this,forecast16);
+            forecast16DaysRecyclerView.setAdapter(forecast16Adapter);
         }
 
         loadingProgressBar.setVisibility(View.INVISIBLE);

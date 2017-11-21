@@ -1,8 +1,5 @@
 package com.bulpros.whatstheweather.models;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.List;
 
 /**
@@ -16,6 +13,7 @@ public class CurrentWeather {
     private Wind wind;
     private WeatherMain main;
     private List<WeatherDescription> weather;
+    private String dt_txt;
 
     public long getId() {
         return id;
@@ -55,5 +53,13 @@ public class CurrentWeather {
 
     public void setWeather(List<WeatherDescription> weather) {
         this.weather = weather;
+    }
+
+    public String getDt_txt() {
+        return dt_txt;
+    }
+
+    public void setDt_txt(String dt_txt) {
+        this.dt_txt = dt_txt;
     }
 }

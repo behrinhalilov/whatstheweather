@@ -72,6 +72,9 @@ public class WeatherInteractor {
                 }
             });
         } else {
+
+            params.put("cnt","16");
+
             Forecast16DaysApi forecast16DaysApi = NetworkManager.instance().create(Forecast16DaysApi.class);
             Call<Forecast16Days> forecast16DaysCall = forecast16DaysApi.getForecast16Days(params);
 
