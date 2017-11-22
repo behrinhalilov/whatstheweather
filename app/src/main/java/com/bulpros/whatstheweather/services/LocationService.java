@@ -1,34 +1,22 @@
 package com.bulpros.whatstheweather.services;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
-import android.support.v4.app.ActivityCompat;
-import android.util.AndroidException;
 import android.util.Log;
-import android.util.Pair;
 
 import com.bulpros.whatstheweather.ApplicationClass;
 import com.bulpros.whatstheweather.helpers.Constants;
-import com.bulpros.whatstheweather.interfaces.OnLocationReceivedListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
-import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.google.android.gms.gcm.TaskParams;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Behrin.Rasimov on 11/20/2017.
