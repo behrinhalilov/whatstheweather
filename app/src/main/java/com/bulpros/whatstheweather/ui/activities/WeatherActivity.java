@@ -1,7 +1,9 @@
 package com.bulpros.whatstheweather.ui.activities;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Criteria;
@@ -14,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +36,7 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class WeatherActivity extends AppCompatActivity implements WeatherView {
@@ -78,22 +82,6 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     private Forecast5Adapter forecast5Adapter;
     private Forecast16Adapter forecast16Adapter;
 
-    /*
-            loadingProgressBar = findViewById(R.id.loading_progress_bar);
-        windSpeed = findViewById(R.id.weather_wind_speed);
-        windDegree = findViewById(R.id.weather_degree);
-        pressure = findViewById(R.id.pressure);
-        currentTemp = findViewById(R.id.current_temperature);
-        minTemp = findViewById(R.id.minimum_temperature);
-        maxTemp = findViewById(R.id.maximum_temperature);
-        description = findViewById(R.id.weather_description);
-        city = findViewById(R.id.city_name);
-        weatherMainImage = findViewById(R.id.current_weather_icon);
-
-        forecast5DaysRecyclerView = findViewById(R.id.forecast_5_days_recycler);
-        forecast16DaysRecyclerView = findViewById(R.id.forecast_16_days_recycler);
-     */
-
     private Unbinder viewUnbinder;
 
     private LocationListener currentLocationListener;
@@ -134,7 +122,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     private void requestSingleTimeLocation(LocationListener locationListener) {
 
         Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
         criteria.setPowerRequirement(Criteria.POWER_LOW);
         criteria.setAltitudeRequired(false);
         criteria.setBearingRequired(false);
@@ -146,7 +134,11 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Looper looper = null;
 
-        locationManager.requestSingleUpdate(criteria, locationListener, looper);
+        try {
+            locationManager.requestSingleUpdate(criteria, locationListener, looper);
+        } catch (SecurityException se) {
+            se.printStackTrace();
+        }
     }
 
     private void initLocationListener() {
@@ -236,5 +228,34 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     protected void onDestroy() {
         super.onDestroy();
         viewUnbinder.unbind();
+    }
+
+    @OnClick(R.id.about)
+    public void showAbout() {
+
+        final ArrayAdapter<String> arrayAdapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+
+        arrayAdapter.add("MVC Architecture");
+        arrayAdapter.add("ButterKnife");
+        arrayAdapter.add("Retrofit 2.0");
+        arrayAdapter.add("Glide");
+        arrayAdapter.add("GSON");
+        arrayAdapter.add("Components Lifecycle");
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("What's inside:");
+
+        alertDialogBuilder.setAdapter(arrayAdapter,null);
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        alertDialog.show();
     }
 }
