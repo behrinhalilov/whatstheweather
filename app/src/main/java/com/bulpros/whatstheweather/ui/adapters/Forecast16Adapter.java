@@ -13,6 +13,9 @@ import com.bulpros.whatstheweather.helpers.Constants;
 import com.bulpros.whatstheweather.models.Forecast16Days;
 import com.bumptech.glide.Glide;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Behrin.Rasimov on 11/21/2017.
  */
@@ -54,15 +57,17 @@ public class Forecast16Adapter extends RecyclerView.Adapter<Forecast16Adapter.Fo
         return forecastData.getList().size();
     }
 
-    public class Forecast16DaysViewHolder extends RecyclerView.ViewHolder {
+    class Forecast16DaysViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView image;
-        public TextView date;
+        @BindView(R.id.forecast_16_days_image)
+        ImageView image;
+
+        @BindView(R.id.forecast_16days_date)
+        TextView date;
 
         Forecast16DaysViewHolder(View itemView) {
             super(itemView);
-            image = itemView.findViewById(R.id.forecast_16_days_image);
-            date = itemView.findViewById(R.id.forecast_16days_date);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

@@ -31,6 +31,11 @@
 
             <include layout="@layout/current_weather_layout" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/white"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,6 +48,11 @@
                 android:id="@+id/forecast_5_days_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"

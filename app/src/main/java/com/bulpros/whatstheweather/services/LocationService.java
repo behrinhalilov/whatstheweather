@@ -1,16 +1,23 @@
 package com.bulpros.whatstheweather.services;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.support.v4.app.ActivityCompat;
 import android.util.AndroidException;
 import android.util.Log;
 import android.util.Pair;
 
 import com.bulpros.whatstheweather.ApplicationClass;
+import com.bulpros.whatstheweather.helpers.Constants;
 import com.bulpros.whatstheweather.interfaces.OnLocationReceivedListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -32,9 +39,8 @@ public class LocationService extends GcmTaskService {
     public static final String TAG = LocationService.class.getSimpleName();
     private LocationManager locationManager;
     private Location mCurrentLocation;
-    public static final String TASK_GET_LOCATION_ONCE="location_oneoff_task";
-    public static final String TASK_GET_LOCATION_PERIODIC="location_periodic_task";
-    private static final int RC_PLAY_SERVICES = 123;
+    public static final String TASK_GET_LOCATION_ONCE = "location_oneoff_task";
+    public static final String TASK_GET_LOCATION_PERIODIC = "location_periodic_task";
 
     @Override
     public void onInitializeTasks() {
@@ -81,20 +87,17 @@ public class LocationService extends GcmTaskService {
             lastKnownGPSLocation = locationManager.getLastKnownLocation(gpsLocationProvider);
 
             if (lastKnownGPSLocation != null) {
-                Log.i(TAG, "lastKnownGPSLocation is used.");
                 this.mCurrentLocation = lastKnownGPSLocation;
             } else if (lastKnownNetworkLocation != null) {
-                Log.i(TAG, "lastKnownNetworkLocation is used.");
                 this.mCurrentLocation = lastKnownNetworkLocation;
             } else {
-                Log.e(TAG, "lastLocation is not known.");
                 return;
             }
 
 
-            Intent intent = new Intent("LOCATION_UPDATE");
-            intent.putExtra("lat",mCurrentLocation.getLatitude());
-            intent.putExtra("long",mCurrentLocation.getLongitude());
+            Intent intent = new Intent(Constants.ACTION_LOCATION_UPDATE);
+            intent.putExtra("lat", mCurrentLocation.getLatitude());
+            intent.putExtra("lng", mCurrentLocation.getLongitude());
             ApplicationClass.getInstance().sendBroadcast(intent);
 
         } catch (SecurityException sex) {
@@ -104,22 +107,7 @@ public class LocationService extends GcmTaskService {
         return;
     }
 
-    public static void startOneOffLocationTask(String tag, Bundle extras) {
-        Log.d(TAG, "startOneOffLocationTask");
-
-        GcmNetworkManager mGcmNetworkManager = GcmNetworkManager.getInstance(ApplicationClass.getInstance());
-        OneoffTask.Builder taskBuilder = new OneoffTask.Builder()
-                .setService(LocationService.class)
-                .setTag(tag);
-
-        if (extras != null) taskBuilder.setExtras(extras);
-
-        OneoffTask task = taskBuilder.build();
-        mGcmNetworkManager.schedule(task);
-    }
-
     public static void startPeriodicLocationTask(String tag, Long period, Bundle extras) {
-        Log.d(TAG, "startPeriodicLocationTask");
 
         GcmNetworkManager mGcmNetworkManager = GcmNetworkManager.getInstance(ApplicationClass.getInstance());
         PeriodicTask.Builder taskBuilder = new PeriodicTask.Builder()
@@ -135,17 +123,13 @@ public class LocationService extends GcmTaskService {
         mGcmNetworkManager.schedule(task);
     }
 
-
-
-
     public static boolean checkPlayServicesAvailable(Activity activity) {
         GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
         int resultCode = availability.isGooglePlayServicesAvailable(ApplicationClass.getInstance());
 
         if (resultCode != ConnectionResult.SUCCESS) {
             if (availability.isUserResolvableError(resultCode)) {
-                // Show dialog to resolve the error.
-                availability.getErrorDialog(activity, resultCode, RC_PLAY_SERVICES).show();
+                availability.getErrorDialog(activity, resultCode, Constants.RC_PLAY_SERVICES).show();
             }
             return false;
         } else {
