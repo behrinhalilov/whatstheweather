@@ -1,5 +1,6 @@
 package com.bulpros.whatstheweather.presenters;
 
+import com.bulpros.whatstheweather.database.WeatherCacheRepo;
 import com.bulpros.whatstheweather.interactors.CurrentWeatherInteractor;
 import com.bulpros.whatstheweather.interactors.Forecast16DaysInteractor;
 import com.bulpros.whatstheweather.interactors.Forecast5DaysInteractor;
@@ -15,19 +16,21 @@ import com.bulpros.whatstheweather.views.WeatherView;
 public class WeatherPresenter implements IWeatherDataFetchListener {
 
     private WeatherView view;
+    private WeatherCacheRepo repo;
 
     public WeatherPresenter(WeatherView view) {
         this.view = view;
+        repo = new WeatherCacheRepo();
     }
 
     public <T> void attemptFetchData(Class<T> type,double lat, double lng) {
 
         if (type == CurrentWeather.class) {
-            new CurrentWeatherInteractor().fetchData(this,lat,lng);
+            new CurrentWeatherInteractor().fetchData(repo,this,lat,lng);
         } else if (type == Forecast5Days.class) {
-            new Forecast5DaysInteractor().fetchData(this,lat,lng);
+            new Forecast5DaysInteractor().fetchData(repo,this,lat,lng);
         } else {
-            new Forecast16DaysInteractor().fetchData(this,lat,lng);
+            new Forecast16DaysInteractor().fetchData(repo,this,lat,lng);
         }
 
     }

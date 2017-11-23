@@ -236,7 +236,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
         final ArrayAdapter<String> arrayAdapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
-        arrayAdapter.add("MVC Architecture");
+        arrayAdapter.add("MVP Architecture");
         arrayAdapter.add("ButterKnife");
         arrayAdapter.add("Retrofit 2.0");
         arrayAdapter.add("Glide");

@@ -1,5 +1,10 @@
 package com.bulpros.whatstheweather.networking;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import com.bulpros.whatstheweather.ApplicationClass;
 import com.bulpros.whatstheweather.helpers.Constants;
 
 import retrofit2.Retrofit;
@@ -23,6 +28,14 @@ public class NetworkManager {
         }
 
         return retrofit;
+    }
+
+    public static boolean hasNetworkAccess() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) ApplicationClass.getInstance()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }
