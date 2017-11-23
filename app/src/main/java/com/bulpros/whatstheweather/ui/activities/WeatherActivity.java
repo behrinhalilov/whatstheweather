@@ -242,6 +242,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
         arrayAdapter.add("Glide");
         arrayAdapter.add("GSON");
         arrayAdapter.add("Components Lifecycle");
+        arrayAdapter.add("Caching with Room");
         arrayAdapter.add("Google Cloud Messaging API");
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
