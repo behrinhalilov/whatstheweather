@@ -39,6 +39,8 @@ import com.demo.whatstheweather.ui.adapters.Forecast5Adapter;
 import com.demo.whatstheweather.views.WeatherView;
 import com.bumptech.glide.Glide;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -84,11 +86,14 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     @BindView(R.id.forecast_16_days_recycler)
     RecyclerView forecast16DaysRecyclerView;
 
+    @BindView(R.id.current_time)
+    TextView currentTime;
+
     private Forecast5Adapter forecast5Adapter;
     private Forecast16Adapter forecast16Adapter;
     private Unbinder viewUnbinder;
-
     private LocationListener currentLocationListener;
+
     private BroadcastReceiver locationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -98,10 +103,38 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
         }
     };
 
+    private BroadcastReceiver timeChangedListener = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (action.equals(Intent.ACTION_TIME_TICK)) {
+                setTime();
+            }
+        }
+    };
+
+    private void setTime() {
+        Calendar calendar = Calendar.getInstance();
+        StringBuilder timeBuilder = new StringBuilder();
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
+            timeBuilder.append("0"+calendar.get(Calendar.HOUR_OF_DAY));
+        } else {
+            timeBuilder.append(calendar.get(Calendar.HOUR_OF_DAY));
+        }
+        timeBuilder.append(":");
+        if (calendar.get(Calendar.MINUTE) < 10) {
+            timeBuilder.append("0"+calendar.get(Calendar.MINUTE));
+        } else {
+            timeBuilder.append(calendar.get(Calendar.MINUTE));
+        }
+        currentTime.setText(timeBuilder.toString());
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(locationReceiver,new IntentFilter(Constants.ACTION_LOCATION_UPDATE));
+        registerReceiver(timeChangedListener, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 
     @Override
@@ -127,6 +160,8 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
             double lastLng = ApplicationClass.getPrefs().getFloat("lng",0);
             fetchData(lastLat,lastLng);
         }
+
+        setTime();
     }
 
     private void requestSingleTimeLocation(LocationListener locationListener) {
@@ -255,6 +290,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     protected void onStop() {
         super.onStop();
         unregisterReceiver(locationReceiver);
+        unregisterReceiver(timeChangedListener);
     }
 
     @Override

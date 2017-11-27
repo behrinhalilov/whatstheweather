@@ -1,117 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:background="@android:color/transparent"
-    android:weightSum="3">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/current_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="60sp"
+        android:gravity="center"
+        android:textColor="@android:color/white"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
         android:weightSum="3">
 
-        <TextView
-            android:id="@+id/weather_wind_speed"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Wind speed:"
-            android:textSize="10sp"
-            android:textColor="@android:color/white"
-            android:gravity="center|bottom|right"/>
-
-        <TextView
-            android:id="@+id/weather_degree"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Degree:"
-            android:textSize="10sp"
-            android:textColor="@android:color/white"
-            android:gravity="center|right"/>
-
-        <TextView
-            android:id="@+id/pressure"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Pressure:"
-            android:textSize="10sp"
-            android:textColor="@android:color/white"
-            android:gravity="center|top|right"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/current_weather_icon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
+            android:orientation="vertical"
+            android:weightSum="3">
 
             <TextView
-                android:id="@+id/weather_description"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:layout_width="wrap_content"
-                android:textSize="14sp"
+                android:id="@+id/weather_wind_speed"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center|bottom|right"
+                android:text="Wind speed:"
                 android:textColor="@android:color/white"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"/>
+                android:textSize="10sp" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/weather_degree"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center|right"
+                android:text="Degree:"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/pressure"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center|top|right"
+                android:text="Pressure:"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
 
-    <LinearLayout
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        android:weightSum="3">
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/current_temperature"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Temperature:"
-            android:textSize="10sp"
-            android:textColor="@android:color/white"
-            android:gravity="center|bottom|left"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/minimum_temperature"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Min. temp:"
-            android:textSize="10sp"
-            android:textColor="@android:color/white"
-            android:gravity="center|left"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/maximum_temperature"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+                <ImageView
+                    android:id="@+id/current_weather_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+
+                <TextView
+                    android:id="@+id/weather_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="5dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Max. temp:"
-            android:textSize="10sp"
-            android:textColor="@android:color/white"
-            android:gravity="center|top|left"/>
+            android:orientation="vertical"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/current_temperature"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center|bottom|left"
+                android:text="Temperature:"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/minimum_temperature"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:text="Min. temp:"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/maximum_temperature"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center|top|left"
+                android:text="Max. temp:"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
