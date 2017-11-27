@@ -1,5 +1,6 @@
 package com.demo.whatstheweather.database;
 
+import android.location.Location;
 import android.os.AsyncTask;
 
 import com.demo.whatstheweather.ApplicationClass;
@@ -18,6 +19,7 @@ public class WeatherCacheRepo {
     public static final int TYPE_CURRENT = 1;
     public static final int TYPE_FORECAST_5 = 2;
     public static final int TYPE_FORECAST_16 = 3;
+    private WeatherCacheDao dao = ApplicationClass.getInstance().getCacheDb().weatherCacheDao();
 
     public void getEntityContentAsync(final int type, final IOnDbActionCompleted actionCompletedListener) {
 
@@ -71,15 +73,11 @@ public class WeatherCacheRepo {
 
     }
 
-    public void saveEntityAsync(final int type,final Object model) {
+    public void saveEntityAsync(final int type, final Object model) {
         new AsyncTask<Void,Void,Void>() {
-
-            private WeatherCacheDao dao;
 
             @Override
             protected Void doInBackground(Void... params) {
-
-                dao = ApplicationClass.getInstance().getCacheDb().weatherCacheDao();
 
                 switch (type) {
                     case TYPE_CURRENT:
@@ -105,5 +103,4 @@ public class WeatherCacheRepo {
             }
         }.execute();
     }
-
 }

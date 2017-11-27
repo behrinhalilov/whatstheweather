@@ -32,7 +32,6 @@ public class WeatherPresenter implements IWeatherDataFetchListener {
         } else {
             new Forecast16DaysInteractor().fetchData(repo,this,lat,lng);
         }
-
     }
 
     @Override

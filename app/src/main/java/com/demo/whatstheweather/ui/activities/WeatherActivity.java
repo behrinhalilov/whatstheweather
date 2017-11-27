@@ -1,6 +1,7 @@
 package com.demo.whatstheweather.ui.activities;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,11 +11,14 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -22,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.demo.whatstheweather.ApplicationClass;
 import com.demo.whatstheweather.R;
 import com.demo.whatstheweather.helpers.Constants;
 import com.demo.whatstheweather.models.CurrentWeather;
@@ -81,7 +86,6 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
 
     private Forecast5Adapter forecast5Adapter;
     private Forecast16Adapter forecast16Adapter;
-
     private Unbinder viewUnbinder;
 
     private LocationListener currentLocationListener;
@@ -116,7 +120,13 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
 
         loadingProgressBar.setVisibility(View.VISIBLE);
 
-        initLocationListener();
+        if(isLocationEnabled(ApplicationClass.getInstance())) {
+            initLocationListener();
+        } else {
+            double lastLat = ApplicationClass.getPrefs().getFloat("lat",0);
+            double lastLng = ApplicationClass.getPrefs().getFloat("lng",0);
+            fetchData(lastLat,lastLng);
+        }
     }
 
     private void requestSingleTimeLocation(LocationListener locationListener) {
@@ -146,6 +156,8 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
         currentLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                ApplicationClass.getPrefs().edit().putFloat("lat",(float)location.getLatitude()).apply();
+                ApplicationClass.getPrefs().edit().putFloat("lng",(float)location.getLongitude()).apply();
                 fetchData(location.getLatitude(),location.getLongitude());
             }
 
@@ -166,6 +178,27 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
         };
 
         requestSingleTimeLocation(currentLocationListener);
+    }
+
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+
+        }else{
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
+        }
     }
 
     public void fetchData(double lat,double lng) {
