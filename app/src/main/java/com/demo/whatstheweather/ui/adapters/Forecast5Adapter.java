@@ -49,7 +49,8 @@ public class Forecast5Adapter extends RecyclerView.Adapter<Forecast5Adapter.Fore
                 .load(Constants.IMAGE_URL + (forecastData).getList().get(position).getWeather().get(0).getIcon() + ".png")
                 .into(holder.image);
         String date = (forecastData).getList().get(position).getDt_txt().replace(" ", "\n");
-        holder.date.setText(date);
+        String mDate = date.replace("-","/");
+        holder.date.setText(mDate);
         holder.temp.setText((int) (forecastData).getList().get(position).getMain().getTemp() + " C'");
     }
 
