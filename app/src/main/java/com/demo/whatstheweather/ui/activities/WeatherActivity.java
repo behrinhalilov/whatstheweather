@@ -2,6 +2,7 @@ package com.demo.whatstheweather.ui.activities;
 
 import android.app.AlertDialog;
 import android.app.Application;
+import android.arch.persistence.room.PrimaryKey;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,9 +21,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,6 +94,9 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     @BindView(R.id.current_time)
     TextView currentTime;
 
+    @BindView(R.id.parent_view)
+    RelativeLayout parent;
+
     private Forecast5Adapter forecast5Adapter;
     private Forecast16Adapter forecast16Adapter;
     private Unbinder viewUnbinder;
@@ -140,6 +148,10 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
 
         viewUnbinder = ButterKnife.bind(this);
@@ -258,6 +270,16 @@ public class WeatherActivity extends AppCompatActivity implements WeatherView {
             minTemp.setText("Min t:" + String.valueOf(weather.getMain().getTemp_min()) + " C'");
             maxTemp.setText("Max t:" + String.valueOf(weather.getMain().getTemp_max()) + " C'");
             description.setText(weather.getWeather().get(0).getDescription());
+
+            if (weather.getWeather().get(0).getDescription().contains("clear")) {
+                parent.setBackground(getResources().getDrawable(R.drawable.wallpaper_suny));
+            } else if(weather.getWeather().get(0).getDescription().contains("snow")) {
+                parent.setBackground(getResources().getDrawable(R.drawable.wallpaper_snowy));
+            } else if(weather.getWeather().get(0).getDescription().contains("rain")) {
+                parent.setBackground(getResources().getDrawable(R.drawable.wallpaper_rainy));
+            } else if (weather.getWeather().get(0).getDescription().contains("cloud")) {
+                parent.setBackground(getResources().getDrawable(R.drawable.wallpaper_clouds));
+            }
 
             Glide.with(this)
                     .load(Constants.IMAGE_URL + weather.getWeather().get(0).getIcon() + ".png")
